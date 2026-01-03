@@ -1,0 +1,6 @@
+@snakeBE_HostAddress = http://localhost:5048
+
+GET {{snakeBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
