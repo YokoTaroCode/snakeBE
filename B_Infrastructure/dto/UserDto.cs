@@ -1,19 +1,17 @@
-﻿using System;
+﻿using D_Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D_Domain
+namespace B_Infrastructure.dto
 {
-    public class User
+    public class UserDto
     {
         public string Username { get; set; }
         public string Password { get; set; }
         public DateTime SubDate { get; set; }
-
-        public int UserId { get; set; } // k
-        public Game[] Games { get; set; } // nav prop
+        public int UserId { get; set; } 
     }
 }
-
