@@ -1,20 +1,21 @@
 ﻿using B_Infrastructure.dto;
+using B_Infrastructure.dtodotnet;
 using B_Infrastructure.Interfaces;
 using B_Infrastructure.repos;
 using D_Domain;
 
 namespace B_Infrastructure.services
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
-        private readonly UserRepo _userRepo;
+        private readonly IUserRepo _userRepo;
 
-        public UserService(GameRepo gameRepo, UserRepo userRepo)
+        public UserService(IUserRepo userRepo)
         {
             _userRepo = userRepo;
         }
 
-        public async Task CreateGameAsync(UserDto userDto)
+        public async Task CreateGameAsync(UserDto userDto, CancellationToken ct = default)
         {
 
             await _userRepo.CreateUserAsync(new User
@@ -22,20 +23,22 @@ namespace B_Infrastructure.services
                 Username = userDto.Username,
                 Password = userDto.Password,
                 SubDate = DateTime.Now
-            });
+            }, ct);
+            await _userRepo.SaveAsync(ct);
         }
 
-        public async Task DeleteGame(int id)
+        public async Task DeleteUser(int id, CancellationToken ct = default)
         {
            var user = await _userRepo.GetSingleAsync(id) 
-                      ?? throw new Exception("User non trovato");
+                      ?? throw new KeyNotFoundException($"Impossibile eliminare l'utente con ID {id} perchè non esiste nel contesto");
 
             _userRepo.DeleteUser(user);
-       }
+            await _userRepo.SaveAsync(ct);
+        }
 
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync(CancellationToken ct = default)
         {
-            var users = await _userRepo.GetAllAsync();
+            var users = await _userRepo.GetAllAsync(ct);
 
             return users.Select(u => new UserDto
             {
@@ -46,10 +49,10 @@ namespace B_Infrastructure.services
             });
         }
 
-        public async Task<UserDto?> GetSingleAsync(int id)
+        public async Task<UserDto?> GetSingleAsync(int id, CancellationToken ct = default)
         {
-            var user = await _userRepo.GetSingleAsync(id)
-                 ?? throw new Exception("User non trovato");
+            var user = await _userRepo.GetSingleAsync(id, ct)
+                 ?? throw new KeyNotFoundException($"L'utente con ID {id} non esiste nel contesto");
 
             return new UserDto
             {
