@@ -13,7 +13,7 @@ namespace D_Domain
         public DateTime SubDate { get; set; }
 
         public int UserId { get; set; } // k
-        public Game[] Games { get; set; } // nav prop
+        public ICollection<Game> Games { get; set; } // nav prop
     }
 }
 
