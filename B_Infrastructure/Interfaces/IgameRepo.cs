@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace B_Infrastructure
 {
-    public interface IgameRepo
+    public interface IGameRepo
     {
-        Task<IEnumerable<Game>> GetAllAsync();
-        Task<Game?> GetSingleAsync(int id);
-        Task CreateGameAsync(Game game);
+        Task<IEnumerable<Game>> GetAllAsync(CancellationToken ct = default);
+        Task<Game?> GetSingleAsync(int id, CancellationToken ct = default);
+        Task CreateGameAsync(Game game, CancellationToken ct = default);
         void DeleteGame(Game game);
-        Task SaveAsync();
+        Task SaveAsync(CancellationToken ct = default);
 
     }
 }

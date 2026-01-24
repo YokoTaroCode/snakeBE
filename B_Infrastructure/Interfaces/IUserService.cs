@@ -1,4 +1,5 @@
 ﻿using B_Infrastructure.dto;
+using B_Infrastructure.dtodotnet;
 using D_Domain;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace B_Infrastructure.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserDto>> GetAllAsync();
-        Task<UserDto?> GetSingleAsync(int id);
-        Task CreateGameAsync(UserDto userDto);
-        Task DeleteGame(int id);
+        Task<IEnumerable<UserDto>> GetAllAsync(CancellationToken ct = default);
+        Task<UserDto?> GetSingleAsync(int id, CancellationToken ct = default);
+        Task CreateGameAsync(UserDto userDto, CancellationToken ct = default);
+        Task DeleteUser(int id, CancellationToken ct = default);
     }
 }

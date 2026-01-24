@@ -10,9 +10,9 @@ namespace B_Infrastructure.Interfaces
 {
     public interface IGameService
     {
-        Task<IEnumerable<GameDto>> GetAllAsync();
-        Task<GameDto?> GetSingleAsync(int id);
-        Task CreateGameAsync(GameDto gameDto);
-        Task DeleteGame(int id);
+        Task<IEnumerable<GameDto>> GetAllAsync(CancellationToken ct = default);
+        Task<GameDto?> GetSingleAsync(int id, CancellationToken ct = default);
+        Task CreateGameAsync(GameDto gameDto, CancellationToken ct = default);
+        Task DeleteGame(int id, CancellationToken ct = default);
     }
 }
