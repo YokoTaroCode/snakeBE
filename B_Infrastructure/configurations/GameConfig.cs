@@ -13,9 +13,10 @@
                 .WithMany(user => user.Games)
                 .HasForeignKey(game => game.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            gameBuilder.HasKey(game => game.GameId);
             gameBuilder.Property(game => game.Time).IsRequired();
             gameBuilder.Property(game => game.Points).IsRequired();
-            gameBuilder.Property(game => game).IsRequired();
         }
     }
 }
