@@ -2,38 +2,34 @@
 using B_Infrastructure.Interfaces;
 using D_Domain;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace B_Infrastructure.repos
 {
-    public class UserRepo : IUserRepo
+    public class UserRepo(SnakeDbContext ctx) : IUserRepo
     {
-        private readonly SnakeDbContext _ctx;
-        public async Task CreateUserAsync(User user)
+        private readonly SnakeDbContext _ctx = ctx;
+
+        public async Task CreateUserAsync(User user, CancellationToken ct = default)
         {
-           await _ctx.AddAsync(user); 
+           await _ctx.AddAsync(user,ct); 
         }
         public void DeleteUser(User user)
         {
             _ctx.Remove(user);
         }
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllAsync(CancellationToken ct = default)
         {
             return await _ctx.Users
                 .Include(u => u.Games)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
-        public async Task<User?> GetSingleAsync(int id)
+        public async Task<User?> GetSingleAsync(int id, CancellationToken ct = default)
         {
-            return await _ctx.Users.FindAsync(id);
+            return await _ctx.Users.FindAsync(id,ct);
         }
-        public Task SaveAsync()
+        public Task SaveAsync(CancellationToken ct = default)
         {
-            return _ctx.SaveChangesAsync();
+            return _ctx.SaveChangesAsync(ct);
         }
         public void UpdateUser(User user)
         {

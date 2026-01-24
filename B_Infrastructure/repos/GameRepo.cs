@@ -1,52 +1,38 @@
 ﻿using B_Infrastructure.db;
-using B_Infrastructure.dto;
-using B_Infrastructure.Interfaces;
 using D_Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace B_Infrastructure.repos
 {
-    public class GameRepo : IgameRepo
+    public class GameRepo(SnakeDbContext ctx) : IGameRepo
     {
 
-        private readonly SnakeDbContext _ctx;
+        private readonly SnakeDbContext _ctx = ctx;
 
-        public GameRepo(SnakeDbContext ctx) { 
-            this._ctx = ctx;
-        }
-
-        public async Task<IEnumerable<Game>> GetAllAsync()
+        public async Task<IEnumerable<Game>> GetAllAsync(CancellationToken ct = default)
         { 
             return await _ctx.Games
                 .Include(g => g.User)
-                .ToListAsync();
+                .ToListAsync(ct);
         }
 
-        public async Task<Game?> GetSingleAsync(int id)
+        public async Task<Game?> GetSingleAsync(int id, CancellationToken ct = default)
         {
-            return await _ctx.Games.FindAsync(id);
+            return await _ctx.Games.FindAsync(id,ct);
         } 
 
-        public async Task CreateGameAsync(Game game)
+        public async Task CreateGameAsync(Game game, CancellationToken ct = default)
         {
 
-            await _ctx.Games.AddAsync(game);
+            await _ctx.Games.AddAsync(game,ct);
         }
         public void DeleteGame(Game game)
         {
              _ctx.Remove(game);
         }
-        public Task SaveAsync()
+        public Task SaveAsync(CancellationToken ct = default)
         {
-            return _ctx.SaveChangesAsync();
+            return _ctx.SaveChangesAsync(ct);
         }
     }
 }
