@@ -11,10 +11,10 @@ namespace B_Infrastructure.dto
 {
     public class GameDto
     {
-        [ForeignKey(nameof(UserId))]
-        public int UserId { get; set; } // fk 
-        public int Points { get; set; }
-        public int Time { get; set; }
-        public DateTime Date { get; set; }
+        public required int Id { get; set; } 
+        public int UserId { get; set; } 
+        public required int  Points { get; set; }
+        public required int Time { get; set; }
+        public required DateTime Date { get; set; }
     }
 }

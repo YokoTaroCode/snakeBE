@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace B_Infrastructure.dto
+namespace B_Infrastructure.dtodotnet 
 {
     public class UserDto
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public required string Username { get; set; }
+        public required string Password { get; set; }
         public DateTime SubDate { get; set; }
         public int UserId { get; set; } 
     }
