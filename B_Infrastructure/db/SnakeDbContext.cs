@@ -11,9 +11,6 @@ namespace B_Infrastructure.db
 {
     public class SnakeDbContext : DbContext 
     {
-        // costruttore solito 
-        // collections 
-        // on model creating con la mia configurazione figa 
         public SnakeDbContext(DbContextOptions options) : base(options){}
 
         public DbSet<User> Users { get; set; }
@@ -21,7 +18,7 @@ namespace B_Infrastructure.db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(GameConfig).Assembly)
+            modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
     }
 }
