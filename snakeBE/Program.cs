@@ -1,14 +1,31 @@
 ﻿using SharpGrip.FluentValidation.AutoValidation.Mvc​.Extensions;
 using FluentValidation;
-using B_Infrastructure.Interfaces;
-using C_Application;
-using B_Infrastructure.services;
-using B_Infrastructure.repos;
-using B_Infrastructure.db;
 using Microsoft.EntityFrameworkCore;
-using B_Infrastructure;
 using A_snakeBE.Middlewares;
+using SnakeBE.Infrastructure.db;
+using SnakeBE.Application;
+using SnakeBE.Application.services;
+using SnakeBE.Infrastructure.Repository.Interfaces;
+using SnakeBE.Infrastructure.Repository;
+using B_Infrastructure.Interfaces;
 
+/*
+ * requisiti individuati: 
+ * - Il gioco DEVE essere legato ad un determinato utente 
+ * - Un utente PUO avere più giochi associati
+ * - Il gioco DEVE avere un punteggio, un tempo e una data di creazione
+ * - Il DEVE ESSERE registrato SOLO se l'utente è registrato 
+ * - Il gioco DEVE ESSERE eliminato SOLO se esiste nel contesto
+ * - L'utente DEVE ESSERE eliminato SOLO se esiste nel contesto 
+ * - Il gioco DEVE ESSERE eliminato se l'utente associato viene eliminato (cascade delete)
+ * - l'utente NON DEVE ESSERE eliminato se vengono eliminati giochi associati (restrizione)
+ * 
+ * 
+ * funzionalità da aggiungere: 
+ * - Registrazione di un nuovo utente
+ * - Registrazione di un nuovo gioco associato ad un utente già registrato
+ * - 
+ */
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails();

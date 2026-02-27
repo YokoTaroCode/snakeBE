@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using B_Infrastructure.dto;
-using FluentValidation;
+﻿using FluentValidation;
+using SnakeBE.Infrastructure.dto;
 
-namespace C_Application
+namespace SnakeBE.Application
 {
     public class GameValidator : AbstractValidator<GameDto>
     {

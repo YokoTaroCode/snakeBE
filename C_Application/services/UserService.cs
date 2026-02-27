@@ -1,10 +1,8 @@
-﻿using B_Infrastructure.dto;
-using B_Infrastructure.dtodotnet;
-using B_Infrastructure.Interfaces;
-using B_Infrastructure.repos;
-using D_Domain;
+﻿using SnakeBE.Domain;
+using SnakeBE.Infrastructure.dto;
+using SnakeBE.Infrastructure.Repository.Interfaces;
 
-namespace B_Infrastructure.services
+namespace SnakeBE.Application.services
 {
     public class UserService : IUserService
     {

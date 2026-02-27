@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 
-namespace B_Infrastructure.db
+namespace SnakeBE.Infrastructure.db
 {
-    internal class dbContextFactory : IDesignTimeDbContextFactory<SnakeDbContext>
+    internal class DbContextFactory : IDesignTimeDbContextFactory<SnakeDbContext>
     {
-
         public SnakeDbContext CreateDbContext(string[] args)
         {
             IConfigurationRoot confBuilder = new ConfigurationBuilder()
@@ -15,11 +14,10 @@ namespace B_Infrastructure.db
                 .Build();
 
             DbContextOptionsBuilder<SnakeDbContext> optionsBuilder = new();
-            string conn = confBuilder["ConnectionStrings:Default"];
-            if(conn == null)
-            {
-                throw new InvalidOperationException("Connection string 'Default' not found.");
-            }
+
+            string conn = confBuilder["ConnectionStrings:Default"] 
+                ?? throw new InvalidOperationException("Connection string 'Default' not found.");
+
             optionsBuilder.UseSqlServer(conn);
 
             return new SnakeDbContext(optionsBuilder.Options);

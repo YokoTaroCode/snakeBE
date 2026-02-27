@@ -1,8 +1,6 @@
-﻿using B_Infrastructure.dto;
-using B_Infrastructure.dtodotnet;
-using B_Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SnakeBE.Infrastructure.dto;
+using SnakeBE.Infrastructure.Repository.Interfaces;
 
 namespace A_snakeBE.Controllers
 {

@@ -20,7 +20,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\B_Infrastructure\B_Infrastructure.csproj" />
-    <ProjectReference Include="..\C_Application\C_Application.csproj" />
+    <ProjectReference Include="..\B_Infrastructure\SnakeBE.Infrastructure.csproj" />
+    <ProjectReference Include="..\C_Application\SnakeBE.Application.csproj" />
   </ItemGroup>
 </Project>

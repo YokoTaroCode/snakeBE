@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using B_Infrastructure.dto;
-using B_Infrastructure.dtodotnet;
-using FluentValidation;
+﻿using FluentValidation;
+using SnakeBE.Infrastructure.dto;
 
-namespace C_Application
+namespace SnakeBE.Application
 {
     public class UserValidator : AbstractValidator<UserDto>
     {
@@ -19,6 +13,8 @@ namespace C_Application
 
             RuleFor(user => user.Password)
                 .NotEmpty().WithMessage("è richiesta una password")
+
+
                  .MinimumLength(8).WithMessage(" La password deve essere di almeno 8 caratteri");
         }
     }

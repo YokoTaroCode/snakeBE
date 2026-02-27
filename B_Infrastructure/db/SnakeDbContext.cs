@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using D_Domain;
-using B_Infrastructure.configurations;
+﻿using Microsoft.EntityFrameworkCore;
+using SnakeBE.Domain;
 
-namespace B_Infrastructure.db
+namespace SnakeBE.Infrastructure.db
 {
     public class SnakeDbContext : DbContext 
     {
