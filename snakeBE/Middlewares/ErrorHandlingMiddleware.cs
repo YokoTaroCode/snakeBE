@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace A_snakeBE.Middlewares
+namespace SnakeBE.Middlewares
 {
-    public class ErrorHandlingMiddleware : IExceptionHandler
+    public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : IExceptionHandler
     {
-        private readonly ILogger<ErrorHandlingMiddleware> _logger;
-
-        public ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger)
-        {
-            _logger = logger;
-        }
-
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception e, CancellationToken ct)
         {
-            _logger.LogError(e, "Eccezione catturata: {Message}", e.Message);
+            logger.LogError(e, "Eccezione catturata: {Message}", e.Message);
 
             var problemDetails = e switch
             {

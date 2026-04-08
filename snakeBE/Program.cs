@@ -1,31 +1,18 @@
-﻿using SharpGrip.FluentValidation.AutoValidation.Mvc​.Extensions;
-using FluentValidation;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using A_snakeBE.Middlewares;
-using SnakeBE.Infrastructure.db;
+using Microsoft.IdentityModel.Tokens;
+using SharpGrip.FluentValidation.AutoValidation.Mvc​.Extensions;
 using SnakeBE.Application;
 using SnakeBE.Application.services;
-using SnakeBE.Infrastructure.Repository.Interfaces;
+using SnakeBE.Domain.Application.Interfaces;
+using SnakeBE.Domain.Repository.Interfaces;
+using SnakeBE.Infrastructure.db;
 using SnakeBE.Infrastructure.Repository;
-using B_Infrastructure.Interfaces;
+using SnakeBE.Middlewares;
+using System.Text;
 
-/*
- * requisiti individuati: 
- * - Il gioco DEVE essere legato ad un determinato utente 
- * - Un utente PUO avere più giochi associati
- * - Il gioco DEVE avere un punteggio, un tempo e una data di creazione
- * - Il DEVE ESSERE registrato SOLO se l'utente è registrato 
- * - Il gioco DEVE ESSERE eliminato SOLO se esiste nel contesto
- * - L'utente DEVE ESSERE eliminato SOLO se esiste nel contesto 
- * - Il gioco DEVE ESSERE eliminato se l'utente associato viene eliminato (cascade delete)
- * - l'utente NON DEVE ESSERE eliminato se vengono eliminati giochi associati (restrizione)
- * 
- * 
- * funzionalità da aggiungere: 
- * - Registrazione di un nuovo utente
- * - Registrazione di un nuovo gioco associato ad un utente già registrato
- * - 
- */
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails();
@@ -47,6 +34,35 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<SnakeDbContext>()
+        .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options => 
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+
+
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!))
+    };
+});
+builder.Services.AddAuthorization();
+
 var conn = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<SnakeDbContext>(optBuilder => optBuilder.UseSqlServer(conn));
 
@@ -54,9 +70,10 @@ builder.Services.AddScoped<IGameRepo, GameRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<Mapper>();
 
 var app = builder.Build();
-
 app.UseExceptionHandler( _ => { });
 app.UseStatusCodePages();
 
@@ -67,6 +84,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseCors("AllowAll");
 

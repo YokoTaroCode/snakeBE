@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SnakeBE.Infrastructure.dto;
-using SnakeBE.Infrastructure.Repository.Interfaces;
+using SnakeBE.Domain.Application.Interfaces;
+using SnakeBE.Domain.dto;
 
-namespace A_snakeBE.Controllers
+namespace SnakeBE.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -36,5 +36,5 @@ namespace A_snakeBE.Controllers
             return NoContent();
         }
     }
-}
 
+}

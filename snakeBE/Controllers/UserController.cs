@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SnakeBE.Infrastructure.dto;
-using SnakeBE.Infrastructure.Repository.Interfaces;
+using SnakeBE.Domain;
+using SnakeBE.Domain.Application.Interfaces;
+using SnakeBE.Domain.dto;
 
-namespace A_snakeBE.Controllers
+namespace SnakeBE.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -22,19 +23,11 @@ namespace A_snakeBE.Controllers
                 .ContinueWith(task => (IActionResult)Ok(task.Result));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateGameAsync([FromBody] UserDto game)
-        { 
-            await userService.CreateGameAsync(game);
-            return Created();
-        }
-
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGame(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             await userService.DeleteUser(id);
             return NoContent();
         }
-
     }
 }
